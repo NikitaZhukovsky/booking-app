@@ -77,9 +77,12 @@
                 right: 18px;
                 width: 28px;
                 height: 28px;
-                font-size: 20px;
             }
-            button {
+            .password-toggle svg {
+                width: 22px;
+                height: 22px;
+            }
+            button[type="submit"] {
                 padding: 18px 24px;
                 font-size: 18px;
                 border-radius: 24px;
@@ -138,9 +141,12 @@
                 right: 20px;
                 width: 30px;
                 height: 30px;
-                font-size: 22px;
             }
-            button {
+            .password-toggle svg {
+                width: 24px;
+                height: 24px;
+            }
+            button[type="submit"] {
                 padding: 20px 28px;
                 font-size: 20px;
                 min-height: 68px;
@@ -164,6 +170,20 @@
             background-clip: text;
             margin-bottom: 6px;
             line-height: 1.2;
+        }
+
+        .header h1 .gear-icon {
+            display: inline-block;
+            animation: rotate 8s linear infinite;
+            font-size: inherit;
+            line-height: 1;
+            -webkit-text-fill-color: initial;
+            color: var(--tg-theme-text-color, #000);
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
 
         .header .subtitle {
@@ -255,7 +275,6 @@
             font-size: clamp(14px, 3.8vw, 16px);
         }
 
-        /* Исправление зума на iOS */
         .input-wrapper input[type="email"],
         .input-wrapper input[type="password"],
         .input-wrapper input[type="text"] {
@@ -270,35 +289,66 @@
             background: none;
             border: none;
             cursor: pointer;
-            padding: 8px;
-            border-radius: 12px;
+            padding: 6px;
+            border-radius: 8px;
             transition: all 0.2s ease;
             color: var(--tg-theme-hint-color, #8e8e93);
-            font-size: clamp(18px, 4.8vw, 22px);
-            line-height: 1;
             display: flex;
             align-items: center;
             justify-content: center;
             touch-action: manipulation;
-            width: 40px;
-            height: 40px;
+            width: 36px;
+            height: 36px;
+            opacity: 0.7;
+        }
+
+        .password-toggle svg {
+            width: 20px;
+            height: 20px;
+            transition: all 0.2s ease;
         }
 
         @media (hover: hover) {
             .password-toggle:hover {
                 background: rgba(0, 0, 0, 0.04);
+                opacity: 1;
                 color: var(--tg-theme-text-color, #000);
+            }
+            .password-toggle:hover svg {
+                transform: scale(1.05);
             }
         }
 
         .password-toggle:active {
             transform: translateY(-50%) scale(0.92);
             background: rgba(0, 0, 0, 0.06);
+            opacity: 1;
         }
 
         .password-toggle:focus-visible {
             outline: 2px solid var(--tg-theme-button-color, #2481cc);
             outline-offset: 2px;
+        }
+
+        .password-toggle .eye-open,
+        .password-toggle .eye-closed {
+            display: none;
+        }
+
+        .password-toggle.show .eye-open {
+            display: block;
+        }
+
+        .password-toggle.show .eye-closed {
+            display: none;
+        }
+
+        .password-toggle:not(.show) .eye-open {
+            display: none;
+        }
+
+        .password-toggle:not(.show) .eye-closed {
+            display: block;
         }
 
         .days-container {
@@ -513,6 +563,12 @@
             .password-toggle:active {
                 background: rgba(255, 255, 255, 0.08);
             }
+            .password-toggle svg {
+                stroke: var(--tg-theme-hint-color, #8e8e93);
+            }
+            .password-toggle:hover svg {
+                stroke: var(--tg-theme-text-color, #fff);
+            }
         }
 
         /* Безопасные зоны */
@@ -551,9 +607,12 @@
             }
             .password-toggle {
                 right: 10px;
-                width: 36px;
-                height: 36px;
-                font-size: 16px;
+                width: 32px;
+                height: 32px;
+            }
+            .password-toggle svg {
+                width: 18px;
+                height: 18px;
             }
             button[type="submit"] {
                 padding: 14px 16px;
@@ -575,7 +634,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>⚙️ Настройка</h1>
+            <h1><span class="gear-icon">⚙️</span> Настройка</h1>
             <div class="subtitle">Автоматическое бронирование места</div>
         </div>
 
@@ -592,8 +651,17 @@
                     <label><span class="emoji">🔒</span> Пароль</label>
                     <div class="input-wrapper">
                         <input type="password" id="password" required placeholder="••••••••" autocomplete="current-password">
-                        <button type="button" class="password-toggle" id="togglePassword" aria-label="Показать или скрыть пароль">
-                            👁️
+                        <button type="button" class="password-toggle" id="togglePassword" aria-label="Показать пароль">
+                            <!-- Eye open icon -->
+                            <svg class="eye-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                <circle cx="12" cy="12" r="3"/>
+                            </svg>
+                            <!-- Eye closed icon -->
+                            <svg class="eye-closed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
+                                <line x1="1" y1="1" x2="23" y2="23"/>
+                            </svg>
                         </button>
                     </div>
                 </div>
@@ -635,11 +703,11 @@
             const toggleButton = document.getElementById('togglePassword');
             let timeoutId = null;
 
-            // Toggle password visibility
+            // Toggle password visibility with SVG icons
             toggleButton.addEventListener('click', function() {
                 const isPassword = passwordInput.type === 'password';
                 passwordInput.type = isPassword ? 'text' : 'password';
-                toggleButton.textContent = isPassword ? '🙈' : '👁️';
+                toggleButton.classList.toggle('show');
                 toggleButton.setAttribute('aria-label', isPassword ? 'Скрыть пароль' : 'Показать пароль');
             });
 
@@ -696,12 +764,6 @@
                 }, 2300);
             });
 
-            // Подсказка при загрузке
-            setTimeout(() => {
-                showMessage('✨ Заполните данные и сохраните', 'info', 2000);
-            }, 500);
-
-            // Скрываем сообщение при фокусе на поле
             document.querySelectorAll('input').forEach(input => {
                 input.addEventListener('focus', () => {
                     if (messageEl.style.display === 'block') {
@@ -719,7 +781,7 @@
             form.addEventListener('submit', function() {
                 if (passwordInput.type === 'text') {
                     passwordInput.type = 'password';
-                    toggleButton.textContent = '👁️';
+                    toggleButton.classList.remove('show');
                     toggleButton.setAttribute('aria-label', 'Показать пароль');
                 }
             });
